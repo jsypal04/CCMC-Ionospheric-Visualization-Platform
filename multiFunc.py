@@ -2,8 +2,8 @@ import numpy as np
 from dash import html
 from dash import dcc
 
-import testFunc
-import plotFunc5
+import plots.testFunc as testFunc
+import plots.plotFunc5 as plotFunc5
 
 def tec_formatting(multi, obs, task, data, year, TITLES, dstyles):
     sub_child = []

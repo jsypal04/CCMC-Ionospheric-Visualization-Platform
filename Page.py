@@ -9,20 +9,20 @@ from dash.dependencies import Input, Output, State # Modules for creating callba
 import dash_bootstrap_components as dbc # Allows for easier webpage formatting
 
 # Import plotly function files for each type of graph.
-import dstKp
-import testFunc2
-import testFunc3
-import testFunc4
-import testFunc5
-import testFunc7
-import comp_graph
+import plots.dstKp as dstKp
+import plots.testFunc2 as testFunc2
+import plots.testFunc3 as testFunc3
+import plots.testFunc4 as testFunc4
+import plots.testFunc5 as testFunc5
+import plots.testFunc7 as testFunc7
+import plots.comp_graph as comp_graph
 import multiFunc
 import plotSelection
 
 #Import data
-csmc2_foF2 = np.load('foF2_202111_storm.npz')
-csmc2_hmF2 = np.load('hmF2_202111_storm.npz')
-dst_scatter_map = np.load('dst_scatter_map.npz', allow_pickle=True)
+csmc2_foF2 = np.load('data/foF2_202111_storm.npz')
+csmc2_hmF2 = np.load('data/hmF2_202111_storm.npz')
+dst_scatter_map = np.load('data/dst_scatter_map.npz', allow_pickle=True)
 image_paths = ['assets/CCMC.png', 'assets/airflow1.jpg']
 
 #Create styles for the graphs and rows
@@ -203,7 +203,7 @@ def update_graph(multi, yearid, task, plot, obs, child1, child2, child3, child4,
     year = yearid[:4]
 
     fig1=dstKp.dst_kp_plot(int(year), dst_scatter_map['dst_'+year])
-    chosen_year = np.load('MTEC_'+yearid+'_storm.npz')
+    chosen_year = np.load('data/MTEC_'+yearid+'_storm.npz')
 
     # These are conditionals to set up the TEC plot children. They are specially set up to 
     #   contain multiple different graphs since multiple TEC plots can be selected at once.
