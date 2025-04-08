@@ -23,3 +23,5 @@ oldComp.py
 one.py
 .gitignore
 plots/npzDataSources.py
+.ropeproject/
+.vscode
