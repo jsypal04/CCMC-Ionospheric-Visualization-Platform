@@ -523,7 +523,7 @@ def open_thermosphere_tpid_menu(n_clicks_1, n_clicks_2):
     This alows the tpid popup to update immediately when the data selection changes (i.e., the user does not need to 
     close the popup and re-open it for the changes to be reflected.)
     """
-    return {"display": "block"}
+    return [{"display": "block"}]
 
 @app.callback(
     Output("tpid-menu", "style", allow_duplicate=True),
