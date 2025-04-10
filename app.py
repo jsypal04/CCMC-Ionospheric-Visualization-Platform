@@ -1,7 +1,7 @@
 #6/10/2024 - Revisions: Deleted imports, check data.py comments to see original.
 
 import numpy as np
-# Import the dash library and modules 
+# Import the dash library and modules
 import dash
 from dash import dcc # Dash core componenets (dcc) for graphs and interactivity
 from dash import html # Allows html manipultion within dash
@@ -48,9 +48,9 @@ obs_options=[[
                     {'label': 'hmF2_ionsonde', 'value': 'HI', 'disabled': True}]]
 
 #Create styles for the graphs and rows
-dstyles = [{'display': 'flex','overflowY': 'scroll','maxHeight': '43vh', 'overflowX': 'auto'}, 
-           {'height':'200px', 'width': '320px'}, {'margin-top': '20px', 'margin-bottom': '2px'}, 
-           {'height':'100%', 'width': '100%', 'min-width': '600px', 'min-height': '400px'}, {'overflowY': 'scroll', 'overflowX': 'auto'}, 
+dstyles = [{'display': 'flex','overflowY': 'scroll','maxHeight': '43vh', 'overflowX': 'auto'},
+           {'height':'200px', 'width': '320px'}, {'margin-top': '20px', 'margin-bottom': '2px'},
+           {'height':'100%', 'width': '100%', 'min-width': '600px', 'min-height': '400px'}, {'overflowY': 'scroll', 'overflowX': 'auto'},
            { 'height':'40vh', 'width': '100%', 'min-width': '33vh'}, {'height':'200px', 'min-width': '320px', 'width': '100%'}, {'height':'1200px', 'min-width': '600px', 'width': '100%'},
            {'display': 'flex','overflowY': 'scroll', 'height': '39vh', 'border-radius': '20px'}]
 #Create error message
@@ -64,9 +64,9 @@ error = html.P('No Comparison Available for Standard Model.',
                     'paddingTop': '25%',
                     'width': '100%'})
 
-TITLES=[['Madrigal TEC ','GloTEC ','JPL GIM ','SAMI3 ','SAMI3-RCM ','SAMI3-TIEGCM ','IRI-2016 ','IRI-2020 ','WAM-IPE ','WACCM-X ','TIEGCM-Weimer ', 
+TITLES=[['Madrigal TEC ','GloTEC ','JPL GIM ','SAMI3 ','SAMI3-RCM ','SAMI3-TIEGCM ','IRI-2016 ','IRI-2020 ','WAM-IPE ','WACCM-X ','TIEGCM-Weimer ',
         'TIEGCM-Heelis ','CTIPe ','GITM-SWMF ','PBMOD '], ['FORM-7/COS-2 ','GIS_NCKU ','IRI2016 ','IRI2020 ','SAMI3-RCM ','SAMI3-TIEGCM ',
-               'SAMI3-ICON ','WACCM-X ','GITM-SWMF ','TIEGCM-Weimer ','TIEGCM-Heelis ','WAM-IPE ','CTIPe '], 
+               'SAMI3-ICON ','WACCM-X ','GITM-SWMF ','TIEGCM-Weimer ','TIEGCM-Heelis ','WAM-IPE ','CTIPe '],
                ['F7/C2 ','GIS_NCKU ','IRI2016 ','IRI2020 ','SMI3-RCM ','SMI3-TGCM ',
                'SMI3-ICN ','WACCM-X ','GTM-SWMF ','TGCM-Wmr ','TGCM-Hls ','WAM-IPE ','CTIPe ']]
 
@@ -115,7 +115,7 @@ for i in TITLES:
         options_element = {'label': k, 'value': str(j)}
         sub_op_list.append(options_element)
     model_list.append(sub_op_list)
-        
+
 
 # Begin Dash App
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -123,9 +123,9 @@ mathjax = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?confi
 app.config.suppress_callback_exceptions = True
 app.scripts.append_script({ 'external_url' : mathjax })
 #Define the layout: Set the background to a light gray, delete all margines.
-ionosphere_layout = html.Div(style = {'backgroundColor':'#f4f6f7  ', 'margin': '0'}, children=[  
+ionosphere_layout = html.Div(style = {'backgroundColor':'#f4f6f7  ', 'margin': '0'}, children=[
     html.Div( #Create a background for the CCMC logo image.
-        style={'width': '20%', 'background-color': '#f4f6f7', 
+        style={'width': '20%', 'background-color': '#f4f6f7',
                       'height': '200px', 'position': 'fixed',
                       'margin-top': '0px','box-shadow': '5px 5px 5px #ededed ',
             "zIndex": "1" # Control the layers of the title, with this being the lowest layer.
@@ -137,14 +137,14 @@ ionosphere_layout = html.Div(style = {'backgroundColor':'#f4f6f7  ', 'margin': '
                                     'background-color': '#f4f6f7  ','padding-right': '6%', }),
     dbc.Tooltip( #Airflow Image Credits.
         "Image Credit: NASA/Don Pettit",
-        target="picture_bg", 
+        target="picture_bg",
         placement="bottom"
     ),
     html.Div(
-        id='img_container', 
+        id='img_container',
         children=[ #Airflow Image and text.
             html.Img(
-                id = 'picture_bg', 
+                id = 'picture_bg',
                 src=image_paths[1],
                 style={"zIndex": "3", 'top': '0', 'width': '100%', 'height': '100px', 'object-fit': 'cover'}
             ),
@@ -152,16 +152,16 @@ ionosphere_layout = html.Div(style = {'backgroundColor':'#f4f6f7  ', 'margin': '
                 id='text_overlay',
                 children=[
                     html.P(
-                        "CCMC Ionospheric and Thermospheric Score Board", 
-                        id='text_box', 
+                        "CCMC Ionospheric and Thermospheric Score Board",
+                        id='text_box',
                         style={
                             "zIndex": "4",
-                            'position': 'absolute', 
-                            'top': '10px', 
-                            'left': '10px', 
-                            'color': 'white', 
-                            'font-size': '50px', 
-                            'overflowX': 'hidden', 
+                            'position': 'absolute',
+                            'top': '10px',
+                            'left': '10px',
+                            'color': 'white',
+                            'font-size': '50px',
+                            'overflowX': 'hidden',
                             'white-space': 'nowrap'
                         }
                     )
@@ -169,14 +169,14 @@ ionosphere_layout = html.Div(style = {'backgroundColor':'#f4f6f7  ', 'margin': '
             )
         ],
         style={
-            "zIndex": "3", 
-            'padding': '0', 
-            'margin': '0', 
-            'width': '100%', 
-            'height': '100%', 
-            'position': 'relative', 
+            "zIndex": "3",
+            'padding': '0',
+            'margin': '0',
+            'width': '100%',
+            'height': '100%',
+            'position': 'relative',
             'margin-left': '20%',
-            'overflowX': 'hidden', 
+            'overflowX': 'hidden',
             'width':'80%'
         }
     ),
@@ -190,7 +190,7 @@ ionosphere_layout = html.Div(style = {'backgroundColor':'#f4f6f7  ', 'margin': '
                         {'label': 'Thermosphere Neutral Density Assessment', 'value': "TNDA"},
                         {'label': 'Ray Tracing', 'value': 'RT', 'disabled': True},
                         {'label': 'GPS Positioning', 'value': 'GPS', 'disabled': True}
-                    ], 
+                    ],
                     value = 'IMV'
                 ),
                 html.Div(children=[html.B(children='Storm ID')], style=dstyles[2]),
@@ -214,7 +214,7 @@ ionosphere_layout = html.Div(style = {'backgroundColor':'#f4f6f7  ', 'margin': '
                 html.Div(children=[html.B(children='Plot')], style=dstyles[2]),
                 dcc.Dropdown(id='plot',
                     options=options_list[1], multi=True, value = plot_default[0]),
-            ], style={"zIndex": "2", 'width': '20%', 'background-color': '#f4f6f7', 
+            ], style={"zIndex": "2", 'width': '20%', 'background-color': '#f4f6f7',
                       'padding': '20px', 'height': '100%', 'position': 'fixed',
                       'margin-top': '0px','box-shadow': '5px 5px 5px #ededed '
 }),
@@ -235,10 +235,10 @@ ionosphere_layout = html.Div(style = {'backgroundColor':'#f4f6f7  ', 'margin': '
                 dbc.Col(html.Div(style={'height': '15px'}), width=12)]),
             dbc.Row([
                 dbc.Col([
-                    html.Div(id = 'child3', style=dstyles[8], children =[]), 
+                    html.Div(id = 'child3', style=dstyles[8], children =[]),
                     dbc.Tooltip( #Airflow Image Credits.
                         dcc.Markdown(id = "ch3m" , children='$x=\\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$', mathjax=True),
-                        target="child3", 
+                        target="child3",
         placement="bottom"
     ),], width=6),
                 dbc.Col([
@@ -262,17 +262,17 @@ ionosphere_layout = html.Div(style = {'backgroundColor':'#f4f6f7  ', 'margin': '
                 dbc.Col([
                     html.Div(id = 'child8', style=dstyles[8], children =[])], width=6),
                     ])
-        ], fluid=True), 
+        ], fluid=True),
     ]),
             html.Footer(
-            children=[html.A("Accessibility", href='https://www.nasa.gov/accessibility', target="_blank"), html.Span(children =" | ")          
+            children=[html.A("Accessibility", href='https://www.nasa.gov/accessibility', target="_blank"), html.Span(children =" | ")
 ,html.A("Privacy Policy", href='https://www.nasa.gov/privacy/', target="_blank"), html.Span(children =" | Curators: Paul DiMarzio, Joseph Sypal, and Dr. Min-Yang Chou | NASA Official: Maria Kuznetsova")],
             style={
                 'margin-left' : '20%',
                 "textAlign": "center",
                 "padding": "10px",
                 "backgroundColor": "#f1f1f1",
-                "position": "relative", 
+                "position": "relative",
                 "bottom": 0,
                 "width": "80%"})])
 
@@ -337,7 +337,7 @@ def update_graph(multi, yearid, task, plot, obs, child1, child2, child3, child4,
     fig1=dstKpPlot.dst_kp_plot(int(year), dst_scatter_map['dst_'+year])
     chosen_year = np.load('data/MTEC_'+yearid+'_storm.npz')
 
-    # These are conditionals to set up the TEC plot children. They are specially set up to  
+    # These are conditionals to set up the TEC plot children. They are specially set up to
     #   contain multiple different graphs since multiple TEC plots can be selected at once.
     child_multi, child_tec, comp, multi, cm, child_osse = multiFunc.tec_formatting(multi, obs, task, [chosen_year, TEC_foF2, TEC_hmF2], year, TITLES, dstyles)
 
@@ -357,7 +357,7 @@ def update_graph(multi, yearid, task, plot, obs, child1, child2, child3, child4,
             options_list_final = options_list[0]
             second_graph = child_multi
         plot_value = plot
-        graphs = [ 
+        graphs = [
                     child1,
                     second_graph,
                     dcc.Graph(style=dstyles[3], figure=fig1),
@@ -369,13 +369,13 @@ def update_graph(multi, yearid, task, plot, obs, child1, child2, child3, child4,
                 ]
         # Generate the comparison graph based off all selected model excluding comparison model.
         cm = list(map(int, cm))
-        if len(cm) == 1 and cm[0] == 0: graphs[-1] = error 
-        else:      
+        if len(cm) == 1 and cm[0] == 0: graphs[-1] = error
+        else:
             graphs[-1] = dcc.Graph(style=dstyles[3], figure=comparisonPlot.model_comparison_plot(TEC_foF2[0], TEC_foF2, TITLES[1], cm, dst_scatter_map['z_foF2'], year))
         # Add selected plots and take out others.
         chl = plotSelection.plot_selection_format(plot, plot_options, graphs)
         return chl[0], chl[1], chl[2], chl[3], chl[4], chl[5], chl[6],chl[7], multi, model_list[1], options_list_final, obs_options[0], yearid, True, False, plot_value, "$$y = x^2$$" #False, plot_default[1]
-    
+
     elif obs == 'HC2':
         if task == "SCE":
             options_list_final = options_list[1]
@@ -396,13 +396,13 @@ def update_graph(multi, yearid, task, plot, obs, child1, child2, child3, child4,
                 ]
         # Generate the comparison graph based off all selected model excluding comparison model.
         cm = list(map(int, cm))
-        if len(cm) == 1 and cm[0] == 0: graphs[-1] = error 
-        else:      
+        if len(cm) == 1 and cm[0] == 0: graphs[-1] = error
+        else:
             graphs[-1] = dcc.Graph(style=dstyles[3], figure=comparisonPlot.model_comparison_plot(TEC_hmF2[0], TEC_hmF2, TITLES[1], cm, dst_scatter_map['z_hmF2'], year))
         # Add selected plots and take out others.
         chl = plotSelection.plot_selection_format(plot, plot_options, graphs)
         return chl[0], chl[1], chl[2], chl[3], chl[4], chl[5], chl[6],chl[7], multi, model_list[1], options_list_final, obs_options[0], yearid, True, False, plot_value, "$$y = x^2$$" #False, plot_default[1]
-    
+
 
     else:
         if task == 'SCE':
@@ -417,7 +417,7 @@ def update_graph(multi, yearid, task, plot, obs, child1, child2, child3, child4,
             graphs = [
                         child_multi,
                         dcc.Graph(style=dstyles[3], figure=fig1),
-                        child_tec, 
+                        child_tec,
                         dcc.Graph(style=dstyles[3], figure=rcpmPlot.rcpm_plot(chosen_year['Alldata'], year, TITLES[0], [[0, 30], [-15, 15], [0, 1.2], [-25, 25], "TEC"])),
                         dcc.Graph(style=dstyles[3], figure=skip.heatmap_sssm_plot(chosen_year['allphase'], "TEC", year, TITLES[0])),
                         dcc.Graph(style=dstyles[3], figure=sssmPlot.skill_scores_sum_plot(chosen_year['All_nss'], year, TITLES[0], "TEC")),
@@ -426,8 +426,8 @@ def update_graph(multi, yearid, task, plot, obs, child1, child2, child3, child4,
                     ]
 
             cm = list(map(int, cm))
-            if len(cm) == 1 and cm[0] == 0: graphs[-1] = error 
-            else:      
+            if len(cm) == 1 and cm[0] == 0: graphs[-1] = error
+            else:
                 graphs[-1] = dcc.Graph(style=dstyles[3], figure=comparisonPlot.model_comparison_plot(chosen_year['TEC_all'][0], chosen_year['TEC_all'], TITLES[0], cm, dst_scatter_map['z_' + year], year))
             # Generate the comparison graph based off all selected model excluding comparison model.
             plot_options = ['DEF_F1', 'DK_F','DEF_F2', 'MS_F', 'SN_F1', 'SN_F2', 'RCC','SC_F']
@@ -449,7 +449,7 @@ def update_graph(multi, yearid, task, plot, obs, child1, child2, child3, child4,
             graphs = [
                         child_multi,
                         dcc.Graph(style=dstyles[3], figure=fig1),
-                        child_tec, 
+                        child_tec,
                         dcc.Graph(style=dstyles[3], figure=rcpmPlot.rcpm_plot(chosen_year['Alldata'], year, TITLES[0], [[0, 30], [-15, 15], [0, 1.2], [-25, 25], "TEC"])),
                         dcc.Graph(style=dstyles[3], figure=skip.heatmap_sssm_plot(chosen_year['allphase'], "TEC", year, TITLES[0])),
                         dcc.Graph(style=dstyles[3], figure=sssmPlot.skill_scores_sum_plot(chosen_year['All_nss'], year, TITLES[0], "TEC")),
@@ -465,8 +465,8 @@ def update_graph(multi, yearid, task, plot, obs, child1, child2, child3, child4,
             child5 = dcc.Graph(style=dstyles[3], figure=sssmPlot.skill_scores_sum_plot(chosen_year['All_nss'], year, TITLES[0], "TEC"))
             # Generate the comparison graph based off all selected model excluding comparison model.
             cm = list(map(int, cm))
-            if len(cm) == 1 and cm[0] == 0: graphs[-1] = error 
-            else:     
+            if len(cm) == 1 and cm[0] == 0: graphs[-1] = error
+            else:
                 graphs[-1] = dcc.Graph(style=dstyles[3], figure=comparisonPlot.model_comparison_plot(chosen_year['TEC_all'][0], chosen_year['TEC_all'], TITLES[0], cm, dst_scatter_map['z_' + year], year))
             plot_options = ['DEF_F1', 'DK_F','DEF_F2', 'MS_F', 'SN_F1', 'SN_F2', 'RCC','SC_F']
             chl = plotSelection.plot_selection_format(plot, plot_options, graphs)
@@ -475,9 +475,9 @@ def update_graph(multi, yearid, task, plot, obs, child1, child2, child3, child4,
             #    child6 = dcc.Graph(style=dstyles[3], figure=comparisonPlot.model_comparison_plot(chosen_year['TEC_all'][0], chosen_year['TEC_all'], TITLES[0], cm, dst_scatter_map['z_' + year], year))
 
             #return child1, child_multi, child3, child4, child5, child6, None, None, multi, options_list[2], options_list[1], obs_op, yearid, False, False, True
-        
+
 # The following callbacks are all used to update elements of the thermosphere page
-# For the sake of keeping all the thermosphere code together, I implemented the callbacks in thermosphere_page.py and 
+# For the sake of keeping all the thermosphere code together, I implemented the callbacks in thermosphere_page.py and
 #   simply called those functions in their respective callbacks in this file
 @app.callback(
     Output("thermosphere-main-content", "children"),
@@ -520,7 +520,7 @@ def display_thermosphere_plots(parameter, category, ap_max_threshold, f107_max_t
 def open_thermosphere_tpid_menu(n_clicks_1, n_clicks_2):
     """
     This callback only displays the tpid popup, that values are populated in the `display_thermosphere_plots` callback.
-    This alows the tpid popup to update immediately when the data selection changes (i.e., the user does not need to 
+    This alows the tpid popup to update immediately when the data selection changes (i.e., the user does not need to
     close the popup and re-open it for the changes to be reflected.)
     """
     return [{"display": "block"}]
@@ -598,142 +598,142 @@ def toggle_comp_collapse(n, is_open):
 )
 def open_description_popup(CHAMP_clicks, GOCE_clicks, GRACE_A_clicks, SWARM_A_clicks, GRACE_FO_clicks,
                                      MSISE00_01_clicks, MSIS20_01_clicks, JB2008_01_clicks, DTM2020_01_clicks,
-                                     DTM2013_01_clicks, TIEGCM_Weimer_01_clicks, TIEGCM_Heelis_01_clicks, 
+                                     DTM2013_01_clicks, TIEGCM_Weimer_01_clicks, TIEGCM_Heelis_01_clicks,
                                      CTIPe_01_clicks, GITM_01_clicks):
     """
     :Description:
 
-    This callback handles opening and populating the popup for the satellite and model info. It is triggered by 
-    a change to the n_clicks property for any of the checklist labels (n_clicks is initially set to 0). When the 
+    This callback handles opening and populating the popup for the satellite and model info. It is triggered by
+    a change to the n_clicks property for any of the checklist labels (n_clicks is initially set to 0). When the
     popup is closed, all label's n_clicks property are set to 0. This ensures that whenever a label is clicked,
     that label's n_clicks property will be 1 and all other n_clicks properties will be 0.
     """
-    
+
     # CHAMP click
-    if (CHAMP_clicks == 1 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0 
+    if (CHAMP_clicks == 1 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0
         and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0
         and JB2008_01_clicks == 0 and DTM2020_01_clicks == 0 and DTM2013_01_clicks == 0
         and TIEGCM_Weimer_01_clicks == 0 and TIEGCM_Heelis_01_clicks == 0 and CTIPe_01_clicks == 0 and GITM_01_clicks == 0):
 
         return {"display": "block"}, popups.gen_CHAMP_data()
-    
+
     # GOCE click
-    elif (CHAMP_clicks == 0 and GOCE_clicks == 1 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0 
+    elif (CHAMP_clicks == 0 and GOCE_clicks == 1 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0
           and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0
           and JB2008_01_clicks == 0 and DTM2020_01_clicks == 0 and DTM2013_01_clicks == 0
           and TIEGCM_Weimer_01_clicks == 0 and TIEGCM_Heelis_01_clicks == 0 and CTIPe_01_clicks == 0 and GITM_01_clicks == 0):
-        
+
         return {"display": "block"}, popups.gen_GOCE_data()
-    
+
     # GRACE-A click
-    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 1 and SWARM_A_clicks == 0 
+    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 1 and SWARM_A_clicks == 0
           and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0
           and JB2008_01_clicks == 0 and DTM2020_01_clicks == 0 and DTM2013_01_clicks == 0
           and TIEGCM_Weimer_01_clicks == 0 and TIEGCM_Heelis_01_clicks == 0 and CTIPe_01_clicks == 0 and GITM_01_clicks == 0):
-        
+
         return {"display": "block"}, popups.gen_GRACE_A_data()
-    
+
     # SWARM-A click
-    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 1 
+    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 1
           and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0
           and JB2008_01_clicks == 0 and DTM2020_01_clicks == 0 and DTM2013_01_clicks == 0
           and TIEGCM_Weimer_01_clicks == 0 and TIEGCM_Heelis_01_clicks == 0 and CTIPe_01_clicks == 0 and GITM_01_clicks == 0):
-        
+
         return {"display": "block"}, popups.gen_SWARM_A_data()
-    
+
     # GRACE-FO click
-    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0 
+    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0
           and GRACE_FO_clicks == 1 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0
           and JB2008_01_clicks == 0 and DTM2020_01_clicks == 0 and DTM2013_01_clicks == 0
           and TIEGCM_Weimer_01_clicks == 0 and TIEGCM_Heelis_01_clicks == 0 and CTIPe_01_clicks == 0 and GITM_01_clicks == 0):
-        
+
         return {"display": "block"}, popups.gen_GRACE_FO_data()
-    
+
     # MSISE00_01 click
-    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0 
-          and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 1 and MSIS20_01_clicks == 0 
+    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0
+          and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 1 and MSIS20_01_clicks == 0
           and JB2008_01_clicks == 0 and DTM2020_01_clicks == 0 and DTM2013_01_clicks == 0
           and TIEGCM_Weimer_01_clicks == 0 and TIEGCM_Heelis_01_clicks == 0 and CTIPe_01_clicks == 0 and GITM_01_clicks == 0):
 
         return {"display": "block"}, popups.gen_MSISE00_01_data()
 
     # MSIS20_01 click
-    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0 
+    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0
           and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 1
           and JB2008_01_clicks == 0 and DTM2020_01_clicks == 0 and DTM2013_01_clicks == 0
           and TIEGCM_Weimer_01_clicks == 0 and TIEGCM_Heelis_01_clicks == 0 and CTIPe_01_clicks == 0 and GITM_01_clicks == 0):
-        
+
         return {"display": "block"}, popups.gen_MSIS20_01_data()
-    
+
     # JB2008-01 click
-    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0 
+    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0
           and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0
           and JB2008_01_clicks == 1 and DTM2020_01_clicks == 0 and DTM2013_01_clicks == 0
           and TIEGCM_Weimer_01_clicks == 0 and TIEGCM_Heelis_01_clicks == 0 and CTIPe_01_clicks == 0 and GITM_01_clicks == 0):
 
         return {"display": "block"}, popups.gen_JB2008_01_data()
-    
+
     # DTM2020-01 click
-    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0 
-          and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0 
+    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0
+          and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0
           and JB2008_01_clicks == 0 and DTM2020_01_clicks == 1 and DTM2013_01_clicks == 0
           and TIEGCM_Weimer_01_clicks == 0 and TIEGCM_Heelis_01_clicks == 0 and CTIPe_01_clicks == 0 and GITM_01_clicks == 0):
-        
+
         return {"display": "block"}, popups.gen_DTM2020_01_data()
-    
+
     # DTM2013-01 click
-    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0 
-          and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0 
+    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0
+          and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0
           and JB2008_01_clicks == 0 and DTM2020_01_clicks == 0 and DTM2013_01_clicks == 1
           and TIEGCM_Weimer_01_clicks == 0 and TIEGCM_Heelis_01_clicks == 0 and CTIPe_01_clicks == 0 and GITM_01_clicks == 0):
-        
+
         return {"display": "block"}, popups.gen_DTM2013_01_data()
-    
+
     # TIEGCM-Weimer-01 click
-    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0 
-          and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0 
+    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0
+          and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0
           and JB2008_01_clicks == 0 and DTM2020_01_clicks == 0 and DTM2013_01_clicks == 0
           and TIEGCM_Weimer_01_clicks == 1 and TIEGCM_Heelis_01_clicks == 0 and CTIPe_01_clicks == 0 and GITM_01_clicks == 0):
-        
+
         return {"display": "block"}, popups.gen_TIEGCM_Weimer_01_data()
-    
+
     # TIEGCM-Heelis-01 click
-    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0 
-          and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0 
+    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0
+          and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0
           and JB2008_01_clicks == 0 and DTM2020_01_clicks == 0 and DTM2013_01_clicks == 0
           and TIEGCM_Weimer_01_clicks == 0 and TIEGCM_Heelis_01_clicks == 1 and CTIPe_01_clicks == 0 and GITM_01_clicks == 0):
-        
+
         return {"display": "block"}, popups.gen_TIEGCM_Heelis_01_data()
-    
+
     # CTIPe-01 click
-    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0 
-          and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0 
+    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0
+          and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0
           and JB2008_01_clicks == 0 and DTM2020_01_clicks == 0 and DTM2013_01_clicks == 0
           and TIEGCM_Weimer_01_clicks == 0 and TIEGCM_Heelis_01_clicks == 0 and CTIPe_01_clicks == 1 and GITM_01_clicks == 0):
-        
+
         return {"display": "block"}, popups.gen_CTIPe_01_data()
 
     # GITM-01 click
-    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0 
-          and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0 
+    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0
+          and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0
           and JB2008_01_clicks == 0 and DTM2020_01_clicks == 0 and DTM2013_01_clicks == 0
           and TIEGCM_Weimer_01_clicks == 0 and TIEGCM_Heelis_01_clicks == 0 and CTIPe_01_clicks == 0 and GITM_01_clicks == 1):
-        
+
         return {"display": "block"}, popups.gen_GITM_01_data()
 
-    # No click. This state is necessary because setting all n_clicks values to 0 when the x button is clicked 
+    # No click. This state is necessary because setting all n_clicks values to 0 when the x button is clicked
     # triggers this callback.
-    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0 
+    elif (CHAMP_clicks == 0 and GOCE_clicks == 0 and GRACE_A_clicks == 0 and SWARM_A_clicks == 0
           and GRACE_FO_clicks == 0 and MSISE00_01_clicks == 0 and MSIS20_01_clicks == 0
           and JB2008_01_clicks == 0 and DTM2020_01_clicks == 0 and DTM2013_01_clicks == 0
           and TIEGCM_Weimer_01_clicks == 0 and TIEGCM_Heelis_01_clicks == 0 and CTIPe_01_clicks == 0 and GITM_01_clicks == 0):
-        
+
         return {"display": "none"}, ""
 
     # Error
     else:
         return {"display": "block"}, "ERROR: satellite click state unrecognized."
-    
+
 @app.callback(
     [Output("satellite-description-popup", "style", allow_duplicate=True),
      Output("CHAMP-label", "n_clicks"),
@@ -755,6 +755,6 @@ def open_description_popup(CHAMP_clicks, GOCE_clicks, GRACE_A_clicks, SWARM_A_cl
 )
 def close_description_popup(n_clicks):
     return {"display": "none"}, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-    
+
 if __name__ == '__main__':
     app.run_server(debug=True)

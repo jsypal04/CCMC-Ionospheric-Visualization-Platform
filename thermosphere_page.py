@@ -12,7 +12,7 @@ import json, os
 import pandas as pd
 
 # Modules to create the dash layout
-from dash import html, dcc, dash_table 
+from dash import html, dcc, dash_table
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 
@@ -56,7 +56,7 @@ def generate_labels(label):
 ap_thresholds = [80, 132, 207, 236, 300]
 f107_thresholds = [66, 100, 150, 200, 250]
 tpid_base_url = "https://kauai.ccmc.gsfc.nasa.gov/CMR/TimeInterval/viewTI?id="
-image_paths = ['assets/CCMC.png', 'assets/airflow1.jpg', "assets/options-icon.svg"]
+image_paths = ['assets/CCMC.png', 'assets/airflow1.jpg']
 dashboard_data_dir = "data/thermosphere_data"
 benchmark_data_dir = "data/benchmark_scores"
 
@@ -90,18 +90,18 @@ data_selection = html.Div(
             html.Div(html.Strong("Select a Parameter to Analyze")),
             dcc.Dropdown(
                 options=[
-                    "mean_OC", 
-                    "debias_mean_OC", 
-                    "stddev_OC", 
+                    "mean_OC",
+                    "debias_mean_OC",
+                    "stddev_OC",
                     "R"
-                ], 
-                value="mean_OC", 
+                ],
+                value="mean_OC",
                 id="parameter_selection",
                 style={
-                    "margin-top": "15px", 
+                    "margin-top": "15px",
                 }
             )
-        ]), 
+        ]),
         # End paramter selection Dropdown
 
         # Begin event catagory selection Dropdown
@@ -112,11 +112,11 @@ data_selection = html.Div(
                     {"label": "All", "value": "all"},
                     {"label": "Single Peak", "value": "single_peak"},
                     {"label": "Multiple Peak", "value": "multiple_peak"}
-                ], 
-                value="all", 
+                ],
+                value="all",
                 id="category_selections",
                 style={
-                    "margin-top": "10px", 
+                    "margin-top": "10px",
                 }
             )
         ]),
@@ -161,15 +161,15 @@ data_selection = html.Div(
 # This is the basic layout for the thermosphere app
 thermosphere_layout = html.Div(
     style = {
-        'backgroundColor':'#f4f6f7', 
+        'backgroundColor':'#f4f6f7',
         'margin': '0'
-    }, 
+    },
     children=[
         html.Div( #Create a background for the CCMC logo image.
             style={
-            'width': '20%', 
-                'background-color': '#f4f6f7', 
-                'height': '200px', 
+            'width': '20%',
+                'background-color': '#f4f6f7',
+                'height': '200px',
                 'position': 'fixed',
                 'margin-top': '0px',
                 'box-shadow': '5px 5px 5px #ededed ',
@@ -178,26 +178,26 @@ thermosphere_layout = html.Div(
         ),
         # Add the properly formatted CCMC image and airflow photo to the top of the page.
         html.Img(
-            id="image1", 
+            id="image1",
             src=image_paths[0],
             style={
                 "zIndex": "2",
-                'height': '100px', 
-                'width': 'auto%', 
+                'height': '100px',
+                'width': 'auto%',
                 'position': 'fixed',
                 'background-color': '#f4f6f7'
             }
         ),
         dbc.Tooltip( #Airflow Image Credits.
             "Image Credit: NASA/Don Pettit",
-            target="picture_bg", 
+            target="picture_bg",
             placement="bottom"
         ),
         html.Div(
-            id='img_container', 
+            id='img_container',
             children=[ #Airflow Image and text.
                 html.Img(
-                    id = 'picture_bg', 
+                    id = 'picture_bg',
                     src=image_paths[1],
                     style={"zIndex": "3", 'top': '0', 'width': '100%', 'height': '100px', 'object-fit': 'cover'}
                 ),
@@ -205,16 +205,16 @@ thermosphere_layout = html.Div(
                     id='text_overlay',
                     children=[
                         html.P(
-                            "CCMC Ionospheric and Thermospheric Score Board", 
-                            id='text_box', 
+                            "CCMC Ionospheric and Thermospheric Score Board",
+                            id='text_box',
                             style={
                                 "zIndex": "4",
-                                'position': 'absolute', 
-                                'top': '10px', 
-                                'left': '10px', 
-                                'color': 'white', 
-                                'font-size': '50px', 
-                                'overflowX': 'hidden', 
+                                'position': 'absolute',
+                                'top': '10px',
+                                'left': '10px',
+                                'color': 'white',
+                                'font-size': '50px',
+                                'overflowX': 'hidden',
                                 'white-space': 'nowrap'
                             }
                         )
@@ -222,24 +222,24 @@ thermosphere_layout = html.Div(
                 )
             ],
             style={
-                "zIndex": "3", 
-                'padding': '0', 
-                'margin': '0', 
-                'width': '100%', 
-                'height': '100%', 
-                'position': 'relative', 
+                "zIndex": "3",
+                'padding': '0',
+                'margin': '0',
+                'width': '100%',
+                'height': '100%',
+                'position': 'relative',
                 'margin-left': '20%',
-                'overflowX': 'hidden', 
+                'overflowX': 'hidden',
                 'width':'80%'
             }
         ),
         html.Div(
             style={
-                "zIndex": "2", 
-                'width': '20%', 
-                'background-color': '#f4f6f7', 
-                'padding': '20px', 
-                'height': '100%', 
+                "zIndex": "2",
+                'width': '20%',
+                'background-color': '#f4f6f7',
+                'padding': '20px',
+                'height': '100%',
                 'position': 'fixed',
                 'margin-top': '0px',
                 'box-shadow': '5px 5px 5px #ededed',
@@ -273,11 +273,11 @@ thermosphere_layout = html.Div(
                     id="tabs",
                     value="description",
                     children=[
-                        dcc.Tab(label="Description", value="description", style={"background-color": "white", "color": "#e59b1c"}, 
+                        dcc.Tab(label="Description", value="description", style={"background-color": "white", "color": "#e59b1c"},
                             selected_style={"background-color": "#e59b1c", "color": "white", "border": "none"}),
-                        dcc.Tab(label="Analysis Dashboard", value="dashboard", style={"background-color": "white", "color": "#e59b1c"}, 
+                        dcc.Tab(label="Analysis Dashboard", value="dashboard", style={"background-color": "white", "color": "#e59b1c"},
                             selected_style={"background-color": "#e59b1c", "color": "white", "border": "none"}),
-                        dcc.Tab(label="Benchmark", value="benchmark", style={"background-color": "white", "color": "#e59b1c"}, 
+                        dcc.Tab(label="Benchmark", value="benchmark", style={"background-color": "white", "color": "#e59b1c"},
                             selected_style={"background-color": "#e59b1c", "color": "white", "border": "none"})
                     ]),
                 html.Div(id="thermosphere-main-content")
@@ -285,7 +285,7 @@ thermosphere_layout = html.Div(
         ),
         html.Footer(
             children=[
-                html.A("Accessibility", href='https://www.nasa.gov/accessibility', target="_blank"), 
+                html.A("Accessibility", href='https://www.nasa.gov/accessibility', target="_blank"),
                 html.Span(children=" | "),
                 html.A("Privacy Policy", href='https://www.nasa.gov/privacy/', target="_blank"),
                 html.Span(children=" | Curators: Paul DiMarzio, Joseph Sypal, and Dr. Min-Yang Chou | NASA Official: Maria Kuznetsova")
@@ -295,7 +295,7 @@ thermosphere_layout = html.Div(
                 "textAlign": "center",
                 "padding": "10px",
                 "backgroundColor": "#f1f1f1",
-                "position": "relative", 
+                "position": "relative",
                 "bottom": "0px",
                 "width": "80%"
             }
@@ -315,7 +315,7 @@ tpid_menu = html.Div(
             )],
             style={
                 "padding": "10px",
-                "position": "fixed", 
+                "position": "fixed",
                 "top": "0px",
                 "right": "0px",
                 "width": "20%",
@@ -323,12 +323,12 @@ tpid_menu = html.Div(
                 "border-bottom": "1px solid black",
             }
         ),
-        html.Div( # This is the target for the "open_tpid_menu" callback 
+        html.Div( # This is the target for the "open_tpid_menu" callback
             html.Ul(id="tpid-list"),
             style={"margin-top": "110px"}
         )
     ]
-)   
+)
 
 
 ###########################
@@ -340,7 +340,7 @@ tpid_menu = html.Div(
 
 def format_data(data_dir: str) -> dict:
     """
-    Opens and reads each json file in `data_dir` and returns the data in the `formatted_data` dictionary that can be easily converted 
+    Opens and reads each json file in `data_dir` and returns the data in the `formatted_data` dictionary that can be easily converted
     into a dataframe.
 
     :param `data_dir`: The directory containing the json files
@@ -371,7 +371,7 @@ def format_data(data_dir: str) -> dict:
             for key in data["events"]:
                 for satellite in data["events"][key]["satellites"]:
                     for phase in data["events"][key]["satellites"][satellite]:
-                        # select the keys we want and append the data to the coorisponding list in the dictionary 
+                        # select the keys we want and append the data to the coorisponding list in the dictionary
                         formatted_data["model"].append(data["solution"])
                         formatted_data["TP"].append(data["events"][key]["TP"])
                         formatted_data["category"].append(data["events"][key]["category"])
@@ -387,7 +387,7 @@ def format_data(data_dir: str) -> dict:
 
 def load_data() -> tuple[pd.DataFrame, pd.DataFrame]:
     """
-    Defines the lists (`dashboard_files` and `benchmark_files`) that contain the paths to the json sources, 
+    Defines the lists (`dashboard_files` and `benchmark_files`) that contain the paths to the json sources,
     loads the data from the two sources into `thermosphere_df` and `benchmark_df` respectively, and ensures proper phase ordering
     in the dataframes.
 
@@ -440,8 +440,8 @@ def update_content(tab, parameter):
         return [
             html.Div(
                 style={
-                    "padding-top": "10px", 
-                    "padding-left": "10px", 
+                    "padding-top": "10px",
+                    "padding-left": "10px",
                     "width": "100%",
                     "padding-left": "10%",
                     "padding-right": "10%",
@@ -450,11 +450,11 @@ def update_content(tab, parameter):
                 children=[ # Sliders to select peak Ap and F107 thresholds, storms displayed have peak ap/f107 values >= the selected value
                     html.P(["Select the ", html.Strong("peak Ap threshold"), ": greater or equal to"]),
                     dcc.Slider(
-                        0, 4, 1, 
-                        marks={key: str(value) for key, value in enumerate(ap_thresholds)}, 
+                        0, 4, 1,
+                        marks={key: str(value) for key, value in enumerate(ap_thresholds)},
                         id="ap_max_slider",
                         value=0,
-                        persistence=True, 
+                        persistence=True,
                         persistence_type="session",
                         included=False
                     ),
@@ -470,7 +470,7 @@ def update_content(tab, parameter):
                     )
                 ],
             ),
-            html.Div( # Target for the "open_tpid_menu" callback 
+            html.Div( # Target for the "open_tpid_menu" callback
                 id="tpid-menu-button-2",
                 className="tpid-menu-button",
                 children="Storm IDs"
@@ -486,11 +486,11 @@ def update_content(tab, parameter):
                         html.Span(
                             html.Strong(f"Skills By Event: {parameter}"),
                             style={
-                                "z-index": "3", 
+                                "z-index": "3",
                                 "position": "relative",
                                 "top": "50px",
                                 "left": "120px"
-                            } 
+                            }
                         ),
                         dcc.Graph(
                             id="skills-by-event-plot"
@@ -507,14 +507,14 @@ def update_content(tab, parameter):
                             },
                             style_cell={
                                 "text-align": "center"
-                            } 
+                            }
                         )
                     ]),
                     # This div is a target for the "update_plots" callback and will be populated with plotly graphs for each model plotted against phase
-                    html.Div(id="skills-by-phase-plots")
+                   html.Div(id="skills-by-phase-plots")
                 ]
             ),
-            html.Div( # Target for the "open_tpid_menu" callback 
+            html.Div( # Target for the "open_tpid_menu" callback
                 id="tpid-menu-button-1",
                 className="tpid-menu-button",
                 children="Storm IDs"
@@ -542,7 +542,7 @@ def update_content(tab, parameter):
 
         # The actual dash layout for the benchmark page
         return [
-            html.Div( # Target for the "open_tpid_menu" callback 
+            html.Div( # Target for the "open_tpid_menu" callback
                 id="tpid-menu-button-2",
                 className="tpid-menu-button",
                 children="Storm IDs"
@@ -558,11 +558,11 @@ def update_content(tab, parameter):
                         html.Span(
                             html.Strong(f"Skills By Event: {parameter}"),
                             style={
-                                "z-index": "3", 
+                                "z-index": "3",
                                 "position": "relative",
                                 "top": "50px",
                                 "left": "160px"
-                            } 
+                            }
                         ),
                         dcc.Graph(
                             id="skills-by-event-plot",
@@ -582,7 +582,7 @@ def update_content(tab, parameter):
                             style_cell={
                                 "text-align": "center"
                             },
-                            data=table_data 
+                            data=table_data
                         )
                     ]),
                     html.Div(id="skills-by-phase-plots", children=skills_by_phase_plots)
@@ -598,11 +598,11 @@ def update_content(tab, parameter):
 
 
 def display_plots(
-        parameter: str, 
-        category: str, 
-        ap_max_threshold: int, 
-        f107_max_threshold: int, 
-        satellites: list[str], 
+        parameter: str,
+        category: str,
+        ap_max_threshold: int,
+        f107_max_threshold: int,
+        satellites: list[str],
         models: list[str]
     ) -> tuple[go.Figure, list[dict], list, list, list, list]:
     """
@@ -627,7 +627,7 @@ def display_plots(
     :return formatted_main_plot_stats: A list of dash html components which are the mean and std labels for the main plot
     :return tpid_list: A list of the hyperlinks to the storm home page for each unique storm in `filtered_df`
     :return basic_storm_data: Basic stats on the storms being displayed:
-                              
+
                               * Total Storm Count
                               * Multiple Peak Count
                               * Single Peak Count
@@ -641,5 +641,5 @@ def display_plots(
     filtered_df = filtered_df[filtered_df["model"].isin(models)]
     filtered_df = filtered_df[filtered_df["ap_max"].ge(ap_thresholds[ap_max_threshold])]
     filtered_df = filtered_df[filtered_df["f107_max"].ge(f107_thresholds[f107_max_threshold])]
-    
+
     return sp.create_plots(filtered_df, parameter, "MSISE00-01", tpid_base_url)
