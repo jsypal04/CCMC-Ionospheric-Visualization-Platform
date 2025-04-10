@@ -25,23 +25,6 @@ import thermosphere_helpers.description_page as dp
 # SECTION 1: DECLARATIONS
 ###########################
 
-def create_x_button(id: str) -> html.Div:
-    '''
-    Function to create an x button usually used to close a popup
-
-    :param id: The id to be assigned to the x button
-    :return x_button: Dash markup describing the button
-    '''
-
-    return html.Div(
-        id=id,
-        className="x-button",
-        children=[
-            html.Div(className="x-component", id="x-arm1"),
-            html.Div(className="x-component", id="x-arm2")
-        ]
-    )
-
 def options_from_list(label):
     return {
         "label": html.P(label, style={"display": "none"}),
@@ -149,7 +132,7 @@ data_selection = html.Div(
         # Begin satellite and model popup
         html.Div(
             [
-                create_x_button("satellite-desc-x-button"),
+                sp.create_x_button("satellite-desc-x-button"),
                 html.Div(id="satellite-description-data")
             ],
             id="satellite-description-popup"
@@ -279,7 +262,41 @@ thermosphere_layout = html.Div(
                             selected_style={"background-color": "#e59b1c", "color": "white", "border": "none"}),
                         dcc.Tab(label="Benchmark", value="benchmark", style={"background-color": "white", "color": "#e59b1c"},
                             selected_style={"background-color": "#e59b1c", "color": "white", "border": "none"})
-                    ]),
+                    ]
+                ),
+                html.Div(
+                    id="sliders",
+                    style={
+                        "padding-top": "10px",
+                        "padding-left": "10px",
+                        "width": "100%",
+                        "padding-left": "10%",
+                        "padding-right": "10%",
+                        "background-color": "#f4f6f7"
+                    },
+                    children=[ # Sliders to select peak Ap and F107 thresholds, storms displayed have peak ap/f107 values >= the selected value
+                        html.P(["Select the ", html.Strong("peak Ap threshold"), ": greater or equal to"]),
+                        dcc.Slider(
+                            0, 4, 1,
+                            marks={key: str(value) for key, value in enumerate(ap_thresholds)},
+                            id="ap_max_slider",
+                            value=0,
+                            persistence=True,
+                            persistence_type="session",
+                            included=False
+                        ),
+                        html.P(["Select the ", html.Strong("peak F107 threshold"), ": greater or equal to"]),
+                        dcc.Slider(
+                            0, 4, 1,
+                            marks={key: str(value) for key, value in enumerate(f107_thresholds)},
+                            id="f107_max_slider",
+                            value=0,
+                            persistence=True,
+                            persistence_type="session",
+                            included=False
+                        )
+                    ],
+                ),
                 html.Div(id="thermosphere-main-content")
             ]
         ),
@@ -302,34 +319,6 @@ thermosphere_layout = html.Div(
         )
     ]
 )
-
-# layout for the tpid menu popup
-tpid_menu = html.Div(
-    id="tpid-menu",
-    children=[
-        html.Div([
-            html.Strong("TPID Menu"),
-            create_x_button("tpid-x-button"),
-            html.Div(
-                id="basic-storm-data"
-            )],
-            style={
-                "padding": "10px",
-                "position": "fixed",
-                "top": "0px",
-                "right": "0px",
-                "width": "20%",
-                "background-color": "#f1f1f1",
-                "border-bottom": "1px solid black",
-            }
-        ),
-        html.Div( # This is the target for the "open_tpid_menu" callback
-            html.Ul(id="tpid-list"),
-            style={"margin-top": "110px"}
-        )
-    ]
-)
-
 
 ###########################
 # SECTION 3: DATA LOADING
@@ -433,43 +422,11 @@ def update_content(tab, parameter):
     #   if the tab value is benchmark, render the benchamrk tab
     if tab == "description":
         # The description tab basically contains a bunch of static html
-        return dp.description_page
+        return dp.description_page, {"display": "none"}
     elif tab == "dashboard":
         # The dashboard block renders the base template for the analysis dashboard page which is populated by the "display_plots" callback
         # on page load/user input
         return [
-            html.Div(
-                style={
-                    "padding-top": "10px",
-                    "padding-left": "10px",
-                    "width": "100%",
-                    "padding-left": "10%",
-                    "padding-right": "10%",
-                    "background-color": "#f4f6f7"
-                },
-                children=[ # Sliders to select peak Ap and F107 thresholds, storms displayed have peak ap/f107 values >= the selected value
-                    html.P(["Select the ", html.Strong("peak Ap threshold"), ": greater or equal to"]),
-                    dcc.Slider(
-                        0, 4, 1,
-                        marks={key: str(value) for key, value in enumerate(ap_thresholds)},
-                        id="ap_max_slider",
-                        value=0,
-                        persistence=True,
-                        persistence_type="session",
-                        included=False
-                    ),
-                    html.P(["Select the ", html.Strong("peak F107 threshold"), ": greater or equal to"]),
-                    dcc.Slider(
-                        0, 4, 1,
-                        marks={key: str(value) for key, value in enumerate(f107_thresholds)},
-                        id="f107_max_slider",
-                        value=0,
-                        persistence=True,
-                        persistence_type="session",
-                        included=False
-                    )
-                ],
-            ),
             html.Div( # Target for the "open_tpid_menu" callback
                 id="tpid-menu-button-2",
                 className="tpid-menu-button",
@@ -519,8 +476,17 @@ def update_content(tab, parameter):
                 className="tpid-menu-button",
                 children="Storm IDs"
             ),
-            tpid_menu
-        ]
+            sp.create_tpid_menu([], [])
+        ],
+        {
+            "padding-top": "10px",
+            "padding-left": "10px",
+            "width": "100%",
+            "padding-left": "10%",
+            "padding-right": "10%",
+            "background-color": "#f4f6f7",
+            "display": "block"
+        }
     elif tab == "benchmark":
 
         # filter benchmark_df for peek ap/f107 values that are >= selected slider values
@@ -536,9 +502,6 @@ def update_content(tab, parameter):
             tpid_list,
             basic_storm_data
         ) = sp.create_plots(filtered_df, parameter, "TIEGCM-Weimer-01", tpid_base_url)
-
-        tpid_menu.children[1].children.children = tpid_list
-        tpid_menu.children[0].children[2].children = basic_storm_data
 
         # The actual dash layout for the benchmark page
         return [
@@ -593,8 +556,8 @@ def update_content(tab, parameter):
                 className="tpid-menu-button",
                 children="Storm IDs"
             ),
-            tpid_menu
-        ]
+            sp.create_tpid_menu(tpid_list, basic_storm_data)
+        ], { "display": "none" }
 
 
 def display_plots(

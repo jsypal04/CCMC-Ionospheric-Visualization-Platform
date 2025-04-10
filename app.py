@@ -5,6 +5,7 @@ import numpy as np
 import dash
 from dash import dcc # Dash core componenets (dcc) for graphs and interactivity
 from dash import html # Allows html manipultion within dash
+from dash import callback_context
 from dash.dependencies import Input, Output, State # Modules for creating callback functions
 import dash_bootstrap_components as dbc # Allows for easier webpage formatting
 
@@ -480,7 +481,8 @@ def update_graph(multi, yearid, task, plot, obs, child1, child2, child3, child4,
 # For the sake of keeping all the thermosphere code together, I implemented the callbacks in thermosphere_page.py and
 #   simply called those functions in their respective callbacks in this file
 @app.callback(
-    Output("thermosphere-main-content", "children"),
+    [Output("thermosphere-main-content", "children"),
+     Output("sliders", "style")],
     [Input("tabs", "value"),
      Input("parameter_selection", "value")]
 )
@@ -502,7 +504,7 @@ def update_thermosphere_content(tab, parameter):
      Input("ap_max_slider", "value"),
      Input("f107_max_slider", "value"),
      Input("satellites", "value"),
-     Input("models", "value")]
+     Input("models", "value")],
 )
 def display_thermosphere_plots(parameter, category, ap_max_threshold, f107_max_threshold, satellites, models):
     """

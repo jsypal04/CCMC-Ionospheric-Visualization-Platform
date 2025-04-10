@@ -2,7 +2,7 @@
 **stripplot.py**
 
 | This module is the what actually creates all the plots and data that is displayed on the Thermosphere page.
-| 
+|
 | It contains the following functions:
 
 1. `create_main_stripplot`: creates the figure for the main plot on the page
@@ -79,11 +79,11 @@ def create_phase_stripplots(dataframe: DataFrame, parameter: str) -> list:
             html.Span(
                 html.B(f"Skills By Phase: {parameter} ({model})"),
                 style={
-                    "z-index": "3", 
+                    "z-index": "3",
                     "position": "relative",
                     "top": "50px",
                     "left": "80px"
-                } 
+                }
             ),
             dcc.Graph(figure=fig)
         ])
@@ -134,7 +134,7 @@ def create_plots(
     """
     | This function creates the plots and tables for the analysis dashboard and benchmark page on the Thermosphere web app.
     | The functionalities of this function are the following:
-    
+
     * Computing the mean and standard deviation of `filtered_df`
     * Creating and styling the mean and std labels for the main plot using dash html components
     * Creating the pivot table from `filtered_df`
@@ -154,7 +154,7 @@ def create_plots(
                       * R
 
     :param first_model: A string containing the name of the model that will appear at the top of the main plot. This is only
-                        used for styling the mean and std labels rendered to the left of the main plot. 
+                        used for styling the mean and std labels rendered to the left of the main plot.
                         This parameter is needed because a different model is on top on the dashboard page and the benchmark page.
 
     :param tpid_base_url: A string containing the base url used in the hyperlinks in the tpid menu on the analysis dashboard and
@@ -166,12 +166,12 @@ def create_plots(
     :return formatted_main_plot_stats: A list of dash html components which are the mean and std labels for the main plot
     :return tpid_list: A list of the hyperlinks to the storm home page for each unique storm in `filtered_df`
     :return basic_storm_data: Basic stats on the storms being displayed:
-                              
+
                               * Total Storm Count
                               * Multiple Peak Count
                               * Single Peak Count
     """
-    
+
     # create the elements for the main plot mean and std display
     main_plot_stats: DataFrame = filtered_df.groupby("model", observed=False)[parameter].agg(["mean", "std"]).reset_index().round(2)
     main_plot_stats = main_plot_stats.iloc[::-1]
@@ -195,9 +195,9 @@ def create_plots(
         formatted_main_plot_stats.append(stats_label)
 
     # create skills plots stats
-    # skills_plots_stats: pd.DataFrame = filtered_df.groupby("phase", observed=False)[parameter].agg(["mean", "std"]).reset_index().round(2) 
+    # skills_plots_stats: pd.DataFrame = filtered_df.groupby("phase", observed=False)[parameter].agg(["mean", "std"]).reset_index().round(2)
     skills_by_phase_plots = create_phase_stripplots(filtered_df, parameter)
-    
+
     # data preparation for the pivot table
     skills_by_phase: DataFrameGroupBy = filtered_df.groupby(["model", "phase"], observed=False)[parameter]
     skills_by_phase: DataFrame = (
@@ -213,10 +213,60 @@ def create_plots(
     tpid_list, basic_storm_data = fetch_tpid_data(filtered_df, tpid_base_url)
 
     return (
-        main_plot, 
-        table_data, 
+        main_plot,
+        table_data,
         skills_by_phase_plots,
         formatted_main_plot_stats,
         tpid_list,
         basic_storm_data
     )
+
+
+def create_x_button(id: str) -> html.Div:
+    '''
+    Function to create an x button usually used to close a popup
+
+    :param id: The id to be assigned to the x button
+    :return x_button: Dash markup describing the button
+    '''
+
+    return html.Div(
+        id=id,
+        className="x-button",
+        children=[
+            html.Div(className="x-component", id="x-arm1"),
+            html.Div(className="x-component", id="x-arm2")
+        ]
+    )
+
+def create_tpid_menu(tpid_list, basic_storm_data):
+    tpid_menu = html.Div(
+        id="tpid-menu",
+        children=[
+            html.Div([
+                html.Strong("TPID Menu"),
+                create_x_button("tpid-x-button"),
+                html.Div(
+                    id="basic-storm-data",
+                    children=basic_storm_data
+                )],
+                style={
+                    "padding": "10px",
+                    "position": "fixed",
+                    "top": "0px",
+                    "right": "0px",
+                    "width": "20%",
+                    "background-color": "#f1f1f1",
+                    "border-bottom": "1px solid black",
+                }
+            ),
+            html.Div( # This is the target for the "open_tpid_menu" callback
+                html.Ul(
+                    id="tpid-list",
+                    children=tpid_list
+                ),
+                style={"margin-top": "110px"},
+            )
+        ]
+    )
+    return tpid_menu
