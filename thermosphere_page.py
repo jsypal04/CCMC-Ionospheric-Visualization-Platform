@@ -477,8 +477,7 @@ def update_content(tab, parameter):
                 children="Storm IDs"
             ),
             sp.create_tpid_menu([], [])
-        ],
-        {
+        ], {
             "padding-top": "10px",
             "padding-left": "10px",
             "width": "100%",
